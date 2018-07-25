@@ -257,7 +257,7 @@ $app->post('/admin/categories/create', function (){
 
     $category->save();
 
-    header('Location: /admin/category');
+    header('Location: /admin/categories');
 
     exit();
 
