@@ -1,5 +1,6 @@
 <?php
 
+use Hcode\Model\Product;
 use Hcode\Model\Category;
 use Hcode\Model\User;
 use Hcode\Page;
@@ -99,17 +100,25 @@ $app->post('/admin/categories/:idcategory', function ($idcategory){
 
 });
 
-$app->get('/categories/:idcategory', function ($idcategory){
+$app->get('/admin/categories/:idcategory/products', function ($idcategory){
+
+    User::verifyLogin();
 
     $category = new Category();
 
     $category->get((int)$idcategory);
 
+    $category->setData($_POST);
+
     $page = new Page();
 
-    $page->setTpl("category", [
+    $page->setTpl("categories-products", [
         'category' => $category->getValues(),
-        'products' => []
+        'productsRelated' => [],
+        'productsNotRelated' => []
     ]);
 
+    header("Location: /admin/products");
+
+    exit();
 });
