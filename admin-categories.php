@@ -108,17 +108,49 @@ $app->get('/admin/categories/:idcategory/products', function ($idcategory){
 
     $category->get((int)$idcategory);
 
-    $category->setData($_POST);
-
-    $page = new Page();
+    $page = new PageAdmin();
 
     $page->setTpl("categories-products", [
         'category' => $category->getValues(),
-        'productsRelated' => [],
-        'productsNotRelated' => []
+        'productsRelated' => $category->getProducts(),
+        'productsNotRelated' => $category->getProducts(false)
     ]);
+});
 
-    header("Location: /admin/products");
+$app->get('/admin/categories/:idcategory/products/:idproduct/add', function ($idcategory, $idproduct){
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->get((int)$idcategory);
+
+    $product = new Product();
+
+    $product->get((int)$idproduct);
+
+    $category->addProduct($product);
+
+    header("Location: /admin/categories/".$idcategory."/products");
+
+    exit();
+});
+
+$app->get('/admin/categories/:idcategory/products/:idproduct/remove', function ($idcategory, $idproduct){
+
+    User::verifyLogin();
+
+    $category = new Category();
+
+    $category->get((int)$idcategory);
+
+    $product = new Product();
+
+    $product->get((int)$idproduct);
+
+    $category->removeProduct($product);
+
+    header("Location: /admin/categories/".$idcategory."/products");
 
     exit();
 });

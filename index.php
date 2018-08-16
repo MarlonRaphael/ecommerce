@@ -39,11 +39,11 @@ $app->get('/categories/:idcategory', function ($idcategory){
 
     $category->get((int)$idcategory);
 
-    $page = new PageAdmin();
+    $page = new Page();
 
     $page->setTpl("category", [
         'category' => $category->getValues(),
-        'products' => []
+        'products' => Product::checkList($category->getProducts())
     ]);
 
 });
