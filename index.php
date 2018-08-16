@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 session_start();
+
 require_once("vendor/autoload.php");
 
 use Hcode\Model\Product;
@@ -14,40 +15,12 @@ $app = new Slim();
 
 $app->config('debug', true);
 
-require_once('site.php');
-require_once('admin.php');
-require_once('admin-user.php');
-require_once('admin-categories.php');
-require_once('admin-products.php');
-require_once('functions.php');
-
-$app->get('/', function() {
-
-    $products = Product::listAll();
-
-    $page = new Page();
-
-    $page->setTpl("index", [
-        'products' => Product::checkList($products)
-    ]);
-
-});
-
-$app->get('/categories/:idcategory', function ($idcategory){
-
-    $category = new Category();
-
-    $category->get((int)$idcategory);
-
-    $page = new Page();
-
-    $page->setTpl("category", [
-        'category' => $category->getValues(),
-        'products' => Product::checkList($category->getProducts())
-    ]);
-
-});
+require_once("functions.php");
+require_once("site.php");
+require_once("admin.php");
+//require_once("admin-users.php");
+require_once("admin-categories.php");
+require_once("admin-products.php");
+//require_once("admin-orders.php");
 
 $app->run();
-
- ?>
